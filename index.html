@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sana Bir Sorum Var 💖</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+
+<style>
+body{
+    margin:0;
+    height:100vh;
+    background:linear-gradient(135deg,#ff5fa2,#ffc3a0);
+    overflow:hidden;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-family:'Poppins',sans-serif;
+}
+
+/* Floating hearts */
+.heart{
+    position:absolute;
+    color:rgba(255,255,255,.6);
+    animation:float 6s linear infinite;
+}
+@keyframes float{
+    from{transform:translateY(100vh) scale(.5);}
+    to{transform:translateY(-10vh) scale(1.4);}
+}
+
+.container{
+    width:340px;
+    background:white;
+    border-radius:30px;
+    padding:35px 25px 45px;
+    text-align:center;
+    box-shadow:0 25px 60px rgba(0,0,0,.25);
+    position:relative;
+    z-index:10;
+    animation:fade .8s ease;
+}
+
+@keyframes fade{from{opacity:0;transform:scale(.9)}to{opacity:1;transform:scale(1)}}
+
+.buttons{position:relative;height:160px}
+
+button{
+    border:none;
+    padding:14px 30px;
+    border-radius:50px;
+    font-size:16px;
+    cursor:pointer;
+    transition:.3s;
+}
+
+#yesBtn{
+    background:#2ecc71;
+    color:white;
+    box-shadow:0 10px 25px rgba(46,204,113,.5);
+}
+
+#noBtn{
+    background:#e74c3c;
+    color:white;
+    position:absolute;
+    left:180px;
+    top:90px;
+}
+
+.final img{
+    width:180px;
+    border-radius:20px;
+    margin:15px 0;
+    box-shadow:0 10px 30px rgba(0,0,0,.3);
+}
+
+.secret{
+    font-size:12px;
+    margin-top:12px;
+    color:#999;
+    cursor:pointer;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container" id="card">
+    <h2 id="question">Beni seviyor musun? 💖</h2>
+    <div class="buttons">
+        <button id="yesBtn">Evet</button>
+        <button id="noBtn">Hayır</button>
+    </div>
+</div>
+
+<audio id="pop" src="https://cdn.pixabay.com/audio/2022/03/15/audio_8c3b3f4b8a.mp3"></audio>
+<audio id="beat" src="https://cdn.pixabay.com/audio/2022/03/15/audio_2b7f0d6c9c.mp3"></audio>
+<audio id="finalSound" src="https://cdn.pixabay.com/audio/2022/03/15/audio_39c6d37b0c.mp3"></audio>
+
+<script>
+const questions=[
+"Bir daha düşün 😌","Kalbim kırılıyor ama...","Gerçekten mi?",
+"Bu sorudan kaçamazsın 😉","Doğru cevap yeşil 💚",
+"Hâlâ emin misin?","Artık evet deme zamanı 💍"
+];
+
+const noBtn=document.getElementById("noBtn"),
+yesBtn=document.getElementById("yesBtn"),
+question=document.getElementById("question"),
+card=document.getElementById("card"),
+buttons=document.querySelector(".buttons"),
+pop=document.getElementById("pop"),
+beat=document.getElementById("beat"),
+finalSound=document.getElementById("finalSound");
+
+let i=0,scale=1;
+
+function moveNo(){
+ const maxX=buttons.clientWidth-noBtn.offsetWidth;
+ const maxY=buttons.clientHeight-noBtn.offsetHeight;
+ noBtn.style.left=Math.random()*maxX+"px";
+ noBtn.style.top=Math.random()*maxY+"px";
+ pop.play();
+}
+
+noBtn.addEventListener("mouseenter",moveNo);
+noBtn.addEventListener("click",()=>{
+ if(i<questions.length)question.innerText=questions[i];
+ scale+=.18;
+ yesBtn.style.transform=`scale(${scale})`;
+ beat.play();
+ i++; moveNo();
+});
+
+yesBtn.addEventListener("click",()=>{
+ finalSound.play();
+ card.innerHTML=`
+ <div class="final">
+   <h2>Ben de seni çok seviyorum 💕</h2>
+   <img src="https://drive.google.com/thumbnail?id=1xEiY_jqGV9zSFkOa-pc-w0ASxtecFtGA" alt="Sevgili Fotoğrafımız">
+   <p>Hayatımın geri kalanını seninle geçirmek istiyorum...</p>
+   <div class="secret" onclick="heartsExplosion()">Bu anı sakla 💌</div>
+ </div>`;
+});
+
+function heartsExplosion(){
+ for(let i=0;i<40;i++){
+  const h=document.createElement("div");
+  h.className="heart";
+  h.style.left=Math.random()*100+"vw";
+  h.style.fontSize=10+Math.random()*20+"px";
+  h.innerHTML="❤️";
+  document.body.appendChild(h);
+  setTimeout(()=>h.remove(),6000);
+ }
+}
+
+setInterval(heartsExplosion,3000);
+</script>
+
+</body>
+</html>
